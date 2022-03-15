@@ -9,17 +9,16 @@ from dotenv import load_dotenv
 
 # Add .env variable in system variables, making them accessible from os.getenv()
 load_dotenv()
-print("a")
 
 
 class Main:
     def __init__(self):
         self._hub_connection = None
-        self.HOST = os.getenv("HVAC_HOST", "http://178.128.234.252:32775")
+        self.HOST = os.getenv("HOST", "http://178.128.234.252:32775")
 
-        token = os.getenv("HVAC_TOKEN")
-        if token == None:
-            sys.exit("Error: Missing environment variable 'HVAC_TOKEN'")
+        token = os.getenv("TOKEN")
+        if token is None:
+            sys.exit("Error: Missing environment variable 'TOKEN'")
 
         self.HVAC_TOKEN = token
         self.MIN_TEMP = float(os.getenv("MIN_TEMP", "20"))
