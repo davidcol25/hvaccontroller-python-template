@@ -11,8 +11,8 @@ MIN_TEMP = "20"
 MAX_TEMP = "80"
 NB_TICK = "6"
 all_env_vars = {
-    "HVAC_HOST": HOST,
-    "HVAC_TOKEN": HVAC_TOKEN,
+    "HOST": HOST,
+    "TOKEN": HVAC_TOKEN,
     "MIN_TEMP": MIN_TEMP,
     "MAX_TEMP": MAX_TEMP,
     "NB_TICK": NB_TICK,
@@ -39,10 +39,10 @@ class TestStringMethods(unittest.TestCase):
             main = Main()
 
         self.assertEqual(
-            cm.exception.code, "Error: Missing environment variable 'HVAC_TOKEN'"
+            cm.exception.code, "Error: Missing environment variable 'TOKEN'"
         )
 
-    @patch.dict(os.environ, {"HVAC_TOKEN": HVAC_TOKEN}, clear=True)
+    @patch.dict(os.environ, {"TOKEN": HVAC_TOKEN}, clear=True)
     def test_app_run_with_only_token(self):
         main = Main()
         self.assertEqual(main.HOST, HOST)
