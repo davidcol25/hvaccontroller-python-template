@@ -39,7 +39,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          build-args: HVAC_HOST=${{ secrets.HVAC_HOST }},HVAC_TOKEN=${{ secrets.HVAC_TOKEN }}
+          build-args: |
+            HVAC_HOST=${{ secrets.HVAC_HOST }}
+            HVAC_TOKEN=${{ secrets.HVAC_TOKEN }}
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/lab2:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/lab2:${{ github.event.pull_request.head.sha }}
