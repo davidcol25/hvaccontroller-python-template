@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 print("a")
 
+
 class Main:
     def __init__(self):
         self._hub_connection = None
@@ -23,7 +24,7 @@ class Main:
         self.HVAC_TOKEN = token
         self.MIN_TEMP = float(os.getenv("MIN_TEMP", "20"))
         self.MAX_TEMP = float(os.getenv("MAX_TEMP", "80"))
-        self.NB_TICK= int(os.getenv("NB_TICK", "6"))
+        self.NB_TICK = int(os.getenv("NB_TICK", "6"))
 
     def __del__(self):
         if self._hub_connection != None:
