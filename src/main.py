@@ -6,6 +6,8 @@ import json
 import time
 import os
 from dotenv import load_dotenv
+from db import dal
+from sqlalchemy import insert
 
 # Add .env variable in system variables, making them accessible from os.getenv()
 load_dotenv()
@@ -71,7 +73,7 @@ class Main:
             print(data[0]["date"] + " --> " + data[0]["data"])
             date = data[0]["date"]
             dp = float(data[0]["data"])
-
+            dal.connection.execute(insert(dal.temperature).values(heure=date, valeur=dp))
             self.analyzeDatapoint(date, dp)
         except Exception as err:
             print(err)
@@ -85,9 +87,16 @@ class Main:
     def sendActionToHvac(self, date, action, nbTick):
         r = requests.get(f"{self.HOST}/api/hvac/{self.HVAC_TOKEN}/{action}/{nbTick}")
         details = json.loads(r.text)
+        dal.connection.execute(insert(dal.evenements).values(heure=date, description=details['Response']))
         print(details)
 
 
 if __name__ == "__main__":
+    db_username = os.getenv('DB_USERNAME')
+    db_password = os.getenv('DB_PASSWORD')
+    db_host = os.getenv('DB_HOST')
+    db_port = os.getenv('DB_PORT')
+    db_name = os.getenv('DB_NAME')
+    dal.db_init(f"postgresql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}")
     main = Main()
     main.start()

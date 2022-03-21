@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 import requests
 import os
-from src.main import Main
+from main import Main
 
 HOST = "http://178.128.234.252:32775"
 HVAC_TOKEN = "WBhinj3isJ"
