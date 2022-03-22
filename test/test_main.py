@@ -22,7 +22,7 @@ all_env_vars = {
 class TestStringMethods(unittest.TestCase):
     def test_simulator_up(self):
         r = requests.get(f"{HOST}/api/health")
-        self.assertEqual("All system operational Commander !", r.text)
+        self.assertEqual("All system operational Commander !!", r.text)
 
     @patch.dict(os.environ, all_env_vars, clear=True)
     def test_all_env_variable_exist(self):
@@ -39,7 +39,7 @@ class TestStringMethods(unittest.TestCase):
             main = Main()
 
         self.assertEqual(
-            cm.exception.code, "Error: Missing environment variable 'TOKEN'"
+            cm.exception.code, "Error:: Missing environment variable 'TOKEN'"
         )
 
     @patch.dict(os.environ, {"TOKEN": HVAC_TOKEN}, clear=True)
