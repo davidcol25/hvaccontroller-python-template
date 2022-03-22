@@ -36,7 +36,7 @@ class Main:
         self.setup()
         self._hub_connection.start()
 
-        print("Press CTRL+C to exit.")
+        print("||| Press CTRL+C to exit.")
         while True:
             time.sleep(2)
 
