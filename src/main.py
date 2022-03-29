@@ -12,29 +12,6 @@ import sqlalchemy as db
 # Add .env variable in system variables, making them accessible from os.getenv()
 load_dotenv()
 
-engine = db.create_engine(
-    f"mysql+mysqlconnector://"
-    f"{os.getenv('DB_USERNAME')}:"
-    f"{os.getenv('DB_PASSWORD')}@"
-    f"{os.getenv('DB_HOST')}/"
-    f"{os.getenv('DB_NAME')}",
-    connect_args={"ssl_ca": "isrgrootx1.pem"},
-)
-connection = engine.connect()
-metadata = db.MetaData()
-temperature = db.Table(
-    "temperature",
-    metadata,
-    db.Column("heure", db.DateTime(), nullable=False),
-    db.Column("valeur", db.Numeric(), nullable=False),
-)
-evenements = db.Table(
-    "evenements",
-    metadata,
-    db.Column("heure", db.DateTime(), nullable=False),
-    db.Column("description", db.String(255), nullable=False),
-)
-
 # metadata.create_all(engine)
 
 
@@ -55,6 +32,30 @@ class Main:
     def __del__(self):
         if self._hub_connection != None:
             self._hub_connection.stop()
+
+    def db_init(self):
+        self.engine = db.create_engine(
+            f"mysql+mysqlconnector://"
+            f"{os.getenv('DB_USERNAME')}:"
+            f"{os.getenv('DB_PASSWORD')}@"
+            f"{os.getenv('DB_HOST')}/"
+            f"{os.getenv('DB_NAME')}",
+            connect_args={"ssl_ca": "isrgrootx1.pem"},
+        )
+        self.connection = self.engine.connect()
+        self.metadata = db.MetaData()
+        self.temperature = db.Table(
+            "temperature",
+            self.metadata,
+            db.Column("heure", db.DateTime(), nullable=False),
+            db.Column("valeur", db.Numeric(), nullable=False),
+        )
+        self.evenements = db.Table(
+            "evenements",
+            self.metadata,
+            db.Column("heure", db.DateTime(), nullable=False),
+            db.Column("description", db.String(255), nullable=False),
+        )
 
     def setup(self):
         self.setSensorHub()
@@ -98,7 +99,7 @@ class Main:
             print(data[0]["date"] + " --> " + data[0]["data"])
             date = data[0]["date"]
             dp = float(data[0]["data"])
-            connection.execute(db.insert(temperature).values(heure=date, valeur=dp))
+            self.connection.execute(db.insert(self.temperature).values(heure=date, valeur=dp))
             self.analyzeDatapoint(date, dp)
         except Exception as err:
             print(err)
@@ -112,12 +113,13 @@ class Main:
     def sendActionToHvac(self, date, action, nbTick):
         r = requests.get(f"{self.HOST}/api/hvac/{self.HVAC_TOKEN}/{action}/{nbTick}")
         details = json.loads(r.text)
-        connection.execute(
-            db.insert(evenements).values(heure=date, description=details["Response"])
+        self.connection.execute(
+            db.insert(self.evenements).values(heure=date, description=details["Response"])
         )
         print(details)
 
 
 if __name__ == "__main__":
     main = Main()
+    main.db_init()
     main.start()
