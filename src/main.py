@@ -18,12 +18,22 @@ engine = db.create_engine(
     f"{os.getenv('DB_PASSWORD')}@"
     f"{os.getenv('DB_HOST')}/"
     f"{os.getenv('DB_NAME')}",
-    connect_args={'ssl_ca': 'isrgrootx1.pem'}
+    connect_args={"ssl_ca": "isrgrootx1.pem"},
 )
 connection = engine.connect()
 metadata = db.MetaData()
-temperature = db.Table('temperature', metadata, db.Column('heure', db.DateTime(), nullable=False), db.Column('valeur', db.Numeric(), nullable=False))
-evenements = db.Table('evenements', metadata, db.Column('heure', db.DateTime(), nullable=False), db.Column('description', db.String(255), nullable=False))
+temperature = db.Table(
+    "temperature",
+    metadata,
+    db.Column("heure", db.DateTime(), nullable=False),
+    db.Column("valeur", db.Numeric(), nullable=False),
+)
+evenements = db.Table(
+    "evenements",
+    metadata,
+    db.Column("heure", db.DateTime(), nullable=False),
+    db.Column("description", db.String(255), nullable=False),
+)
 
 # metadata.create_all(engine)
 
@@ -102,7 +112,9 @@ class Main:
     def sendActionToHvac(self, date, action, nbTick):
         r = requests.get(f"{self.HOST}/api/hvac/{self.HVAC_TOKEN}/{action}/{nbTick}")
         details = json.loads(r.text)
-        connection.execute(db.insert(evenements).values(heure=date, description=details['Response']))
+        connection.execute(
+            db.insert(evenements).values(heure=date, description=details["Response"])
+        )
         print(details)
 
 
