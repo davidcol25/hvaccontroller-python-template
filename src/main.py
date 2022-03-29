@@ -99,7 +99,9 @@ class Main:
             print(data[0]["date"] + " --> " + data[0]["data"])
             date = data[0]["date"]
             dp = float(data[0]["data"])
-            self.connection.execute(db.insert(self.temperature).values(heure=date, valeur=dp))
+            self.connection.execute(
+                db.insert(self.temperature).values(heure=date, valeur=dp)
+            )
             self.analyzeDatapoint(date, dp)
         except Exception as err:
             print(err)
@@ -114,7 +116,9 @@ class Main:
         r = requests.get(f"{self.HOST}/api/hvac/{self.HVAC_TOKEN}/{action}/{nbTick}")
         details = json.loads(r.text)
         self.connection.execute(
-            db.insert(self.evenements).values(heure=date, description=details["Response"])
+            db.insert(self.evenements).values(
+                heure=date, description=details["Response"]
+            )
         )
         print(details)
 
