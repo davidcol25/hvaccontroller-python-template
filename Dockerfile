@@ -3,9 +3,4 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-ARG HVAC_HOST
-ARG HVAC_TOKEN
-ENV HOST=$HVAC_HOST
-ENV TOKEN=$HVAC_TOKEN
-
 CMD ["python", "./src/main.py"]
