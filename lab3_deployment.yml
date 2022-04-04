@@ -21,8 +21,8 @@ spec:
           image: log680h2022equipe20/lab2:latest
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "75m"
+              memory: "32Mi"
+              cpu: "50m"
             limits:
               memory: "128Mi"
               cpu: "150m"
@@ -32,6 +32,21 @@ spec:
                 configMapKeyRef:
                   name: hvac-lab
                   key: hvac_host
+            - name: MIN_TEMP
+              valueFrom:
+                configMapKeyRef:
+                  name: hvac-lab
+                  key: min_temp
+            - name: MAX_TEMP
+              valueFrom:
+                configMapKeyRef:
+                  name: hvac-lab
+                  key: max_temp
+            - name: NB_TICK
+              valueFrom:
+                configMapKeyRef:
+                  name: hvac-lab
+                  key: nb_tick
             - name: TOKEN
               valueFrom:
                 secretKeyRef:
@@ -48,17 +63,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: hvac-secrets
-                  key: db_username
+                  key: db_password
                   optional: false
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
                   name: hvac-secrets
-                  key: db_username
+                  key: db_host
                   optional: false
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: hvac-secrets
-                  key: db_username
+                  key: db_name
                   optional: false
