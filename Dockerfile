@@ -1,4 +1,4 @@
-FROM python:3.8.3-alpine as alpine-build
+FROM python:3.8.13
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
