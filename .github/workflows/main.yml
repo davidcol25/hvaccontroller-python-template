@@ -53,6 +53,7 @@ jobs:
           kubectl apply -f ./lab3_configmap.yml --kubeconfig ./team01-20-config
           kubectl apply -f ./lab3_docker_secrets.yml --kubeconfig ./team01-20-config
           kubectl apply -f ./lab3_secrets.yml --kubeconfig ./team01-20-config
+          kubectl delete deployment hvac-deployment --kubeconfig ./team01-20-config
           kubectl apply -f ./lab3_deployment.yml --kubeconfig ./team01-20-config
 
 
