@@ -4,6 +4,6 @@ metadata:
   name: hvac-lab
 data:
   hvac_host: "http://178.128.234.252:32775"
-  min_temp: "20"
-  max_temp: "80"
+  min_temp: "40"
+  max_temp: "45"
   nb_tick: "5"
