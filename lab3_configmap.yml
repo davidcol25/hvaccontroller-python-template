@@ -5,5 +5,5 @@ metadata:
 data:
   hvac_host: "http://178.128.234.252:32775"
   min_temp: "20"
-  max_temp: "60"
-  nb_tick: "6"
+  max_temp: "80"
+  nb_tick: "5"
