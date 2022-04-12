@@ -47,12 +47,6 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  deploy:
-    name: Deploy to Digital Ocean Kubernetes Cluster
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Out Repo
-        uses: actions/checkout@v2
 
       - name: Deploy config files
         run: |
@@ -60,6 +54,8 @@ jobs:
           kubectl apply -f ./lab3_docker_secrets.yml --kubeconfig ./team01-20-config
           kubectl apply -f ./lab3_secrets.yml --kubeconfig ./team01-20-config
           kubectl apply -f ./lab3_deployment.yml --kubeconfig ./team01-20-config
+
+
 
 
 
